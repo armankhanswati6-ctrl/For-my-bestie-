@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Bestie</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffeef2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 320px;
+            z-index: 2;
+        }
+
+        h2 { color: #ff4d6d; font-size: 24px; margin-bottom: 20px; }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .yes-btn { background-color: #ff4d6d; color: white; }
+        .no-btn { background-color: #adb5bd; color: white; }
+
+        .hidden { display: none; }
+
+        /* Floating Animation */
+        .hearts {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="hearts" id="hearts-container"></div>
+
+<div class="container" id="main-card">
+    <div id="step1">
+        <h2>Do you love me?</h2>
+        <div class="btn-group">
+            <button class="yes-btn" onclick="goToStep(2)">Yes</button>
+            <button id="no-button" class="no-btn" onclick="handleNo()">No</button>
+        </div>
+    </div>
+
+    <div id="step2" class="hidden">
+        <h2>hmm think again...<br>Are you sure?</h2>
+        <div class="btn-group">
+            <button class="yes-btn" onclick="goToStep(3)">Are you sure</button>
+        </div>
+    </div>
+
+    <div id="step3" class="hidden">
+        <h2>😘😘😘 kiss do ab tor mkh ka</h2>
+        <div class="btn-group">
+            <button class="yes-btn" onclick="goToStep(4)">Ok 🥰</button>
+        </div>
+    </div>
+
+    <div id="step4" class="hidden">
+        <h2>phr socho kiss do 😘 tor mkh k</h2>
+        <div class="btn-group">
+            <button class="yes-btn" onclick="showFinal()">Ok lo 🥰</button>
+        </div>
+    </div>
+
+    <div id="final" class="hidden">
+        <h2>Yay! ❤️ I Love You Too!</h2>
+        <p>Best Friends Forever 🌸</p>
+    </div>
+</div>
+
+<script>
+    let noClickCount = 0;
+
+    function handleNo() {
+        noClickCount++;
+        const noBtn = document.getElementById('no-button');
+        
+        if (noClickCount === 1) {
+            noBtn.innerText = "Are you sure? 🥺";
+        } else if (noClickCount >= 2) {
+            // Force Yes after 2 clicks
+            noBtn.innerText = "Yes! ❤️";
+            noBtn.classList.remove('no-btn');
+            noBtn.classList.add('yes-btn');
+            noBtn.onclick = () => goToStep(2);
+        }
+    }
+
+    function goToStep(stepNumber) {
+        // Hide all steps
+        document.getElementById('step1').classList.add('hidden');
+        document.getElementById('step2').classList.add('hidden');
+        document.getElementById('step3').classList.add('hidden');
+        document.getElementById('step4').classList.add('hidden');
+        
+        // Show specific step
+        document.getElementById('step' + stepNumber).classList.remove('hidden');
+    }
+
+    function showFinal() {
+        document.getElementById('step4').classList.add('hidden');
+        document.getElementById('final').classList.remove('hidden');
+        startHearts();
+    }
+
+    function startHearts() {
+        const container = document.getElementById('hearts-container');
+        for (let i = 0; i < 30; i++) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'absolute';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+            heart.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
+            container.appendChild(heart);
+        }
+    }
+
+    // CSS for floating animation
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes float {
+            to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+
+</body>
+</html>
